@@ -5,7 +5,6 @@ Scripts to build a trimmed-down Windows 11 image!
 <br>
 ### Changes from the original tiny11builder
 - <u>added a menu where you can decide what you want to download </u>
-<br>
 - 1: normal tiny11 <br> 
 - 2: tiny11 with edge <br> 
 - 3: custom selection menu with **GUI** (you can select what you want to delete and what to keep )<br> 
