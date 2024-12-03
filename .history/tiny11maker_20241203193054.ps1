@@ -372,18 +372,18 @@ switch ($choice) {
         $okButton.Text = "OK"
         $okButton.Size = New-Object System.Drawing.Size(100, 40)
         $okButton.Location = New-Object System.Drawing.Point(150, 415)
-        $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  #  background color - can be changed
-        $okButton.ForeColor = [System.Drawing.Color]::FromArgb(255, 255, 255)  # text color
+        $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  # Blauer Hintergrund
+        $okButton.ForeColor = [System.Drawing.Color]::FromArgb(255, 255, 255)  # Weißer Text
         $okButton.FlatStyle = [System.Windows.Forms.FlatStyle]::Flat
         $okButton.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
 
         # Hover effect
         $okButton.Add_MouseEnter({
-            $okButton.BackColor = [System.Drawing.Color]::FromArgb(80, 160, 240)  #  background color - can be changed
+            $okButton.BackColor = [System.Drawing.Color]::FromArgb(80, 160, 240)  # Hellerer Blauton bei Hover
         })
 
         $okButton.Add_MouseLeave({
-            $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  # button color
+            $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  # Originaler Blauton
         })
 
         $okButton.Add_Click({
@@ -396,19 +396,19 @@ switch ($choice) {
         })
         $form.Controls.Add($okButton)
 
-        # show window
+        # Fenster anzeigen
         $form.Add_Shown({ $form.Activate() })
         [void]$form.ShowDialog()
 
-    # Evaluate results
+    # Ergebnisse auswerten
     if ($global:selectedComponents) {
-        Write-Host "The following components were selected:"
+        Write-Host "Folgende Komponenten wurden ausgewählt:"
         $global:selectedComponents | ForEach-Object { Write-Host "- $_" }
 
-        $var = $null # defining var 
+        $var = $null #var definieren
 
 
-        # Perform actions on selected components
+        # Aktionen für ausgewählte Komponenten ausführen
         foreach ($component in $global:selectedComponents) {
             switch ($component) {
                 'Edge' { Write-Host "Edge-Funktion aufrufen"; $var += "Edge"; $var += "Edge_registries" }
@@ -426,13 +426,13 @@ switch ($choice) {
                 'Outlook' { Write-Host "Outlook-Funktion aufrufen"; $var += "Outlook" }
                 'DevHome' { Write-Host "DevHome-Funktion aufrufen"; $var += "DevHome" }
                 default { 
-                    Write-Host "component $component is removed."
+                    Write-Host "Komponente $component wird entfernt."
                     $global:selectedFeatures += $component
                 }
             }
         }
     } else {
-        Write-Host "No components selected."
+        Write-Host "Keine Komponenten ausgewählt."
     }
 
     }
@@ -456,7 +456,7 @@ switch ($choice) {
         }
     }
     default {
-        Write-Host "Invalid input. Please start the script again and select 1, 2 or 3."
+        Write-Host "Ungültige Eingabe. Bitte starten Sie das Skript erneut und wählen Sie 1, 2 oder 3."
         exit
     }
 }

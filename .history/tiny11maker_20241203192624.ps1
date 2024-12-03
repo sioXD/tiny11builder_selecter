@@ -287,7 +287,7 @@ function DevHome{
 
 
 
-# PowerShell selection menu
+# PowerShell Auswahlmenü
 Clear-Host
 Write-Host "Select an option:"
 Write-Host "1 - tiny11 (Standard)"
@@ -329,9 +329,10 @@ switch ($choice) {
         $path.AddArc($form.Width - $radius - 1, $form.Height - $radius - 1, $radius, $radius, 0, 90) 
         $path.AddArc(0, $form.Height - $radius - 1, $radius, $radius, 90, 90)
         $path.CloseFigure()
+        # Formular mit abgerundeten Ecken
         $form.Region = New-Object System.Drawing.Region($path)
         
-        # List with checkboxes
+        # ListBox mit Checkboxen erstellen
         $listBox = New-Object System.Windows.Forms.CheckedListBox
         $listBox.Size = New-Object System.Drawing.Size(350, 400)
         $listBox.Location = New-Object System.Drawing.Point(20, 20)
@@ -342,7 +343,7 @@ switch ($choice) {
         $listBox.CheckOnClick = $true  
 
 
-        # Add elements
+        # Elemente hinzufügen
         $components = @(    #! names must not change (used in variables)
             'Edge', 'OneDrive', 'Load_reg', 'Bypassing_system_requirements', 'Disabling_Sponsored_Apps', 'Enabling_Local_Accounts_on_OOBE', 
             'Disabling_Reserved_Storage', 'Disabling_BitLocker_Device_Encryption', 'Disabling_Chat_icon', 'Disabling_Telemetry', 'Outlook', 'DevHome', 
@@ -360,30 +361,30 @@ switch ($choice) {
         }
 
         
-        # Check all checkboxes by default
+        # Alle Checkboxen standardmäßig markieren 
         for ($i = 0; $i -lt $listBox.Items.Count; $i++) {
             $listBox.SetItemChecked($i, $true)
         }
 
         $form.Controls.Add($listBox)
         
-       # button with hover effect
+       # Modernes Button-Design mit Hover-Effekt
         $okButton = New-Object System.Windows.Forms.Button
         $okButton.Text = "OK"
         $okButton.Size = New-Object System.Drawing.Size(100, 40)
         $okButton.Location = New-Object System.Drawing.Point(150, 415)
-        $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  #  background color - can be changed
-        $okButton.ForeColor = [System.Drawing.Color]::FromArgb(255, 255, 255)  # text color
+        $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  # Blauer Hintergrund
+        $okButton.ForeColor = [System.Drawing.Color]::FromArgb(255, 255, 255)  # Weißer Text
         $okButton.FlatStyle = [System.Windows.Forms.FlatStyle]::Flat
         $okButton.Font = New-Object System.Drawing.Font("Segoe UI", 10, [System.Drawing.FontStyle]::Bold)
 
-        # Hover effect
+        # Hover-Effekt hinzufügen
         $okButton.Add_MouseEnter({
-            $okButton.BackColor = [System.Drawing.Color]::FromArgb(80, 160, 240)  #  background color - can be changed
+            $okButton.BackColor = [System.Drawing.Color]::FromArgb(80, 160, 240)  # Hellerer Blauton bei Hover
         })
 
         $okButton.Add_MouseLeave({
-            $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  # button color
+            $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  # Originaler Blauton
         })
 
         $okButton.Add_Click({
@@ -396,19 +397,19 @@ switch ($choice) {
         })
         $form.Controls.Add($okButton)
 
-        # show window
+        # Fenster anzeigen
         $form.Add_Shown({ $form.Activate() })
         [void]$form.ShowDialog()
 
-    # Evaluate results
+    # Ergebnisse auswerten
     if ($global:selectedComponents) {
-        Write-Host "The following components were selected:"
+        Write-Host "Folgende Komponenten wurden ausgewählt:"
         $global:selectedComponents | ForEach-Object { Write-Host "- $_" }
 
-        $var = $null # defining var 
+        $var = $null #var definieren
 
 
-        # Perform actions on selected components
+        # Aktionen für ausgewählte Komponenten ausführen
         foreach ($component in $global:selectedComponents) {
             switch ($component) {
                 'Edge' { Write-Host "Edge-Funktion aufrufen"; $var += "Edge"; $var += "Edge_registries" }
@@ -426,23 +427,23 @@ switch ($choice) {
                 'Outlook' { Write-Host "Outlook-Funktion aufrufen"; $var += "Outlook" }
                 'DevHome' { Write-Host "DevHome-Funktion aufrufen"; $var += "DevHome" }
                 default { 
-                    Write-Host "component $component is removed."
+                    Write-Host "Komponente $component wird entfernt."
                     $global:selectedFeatures += $component
                 }
             }
         }
     } else {
-        Write-Host "No components selected."
+        Write-Host "Keine Komponenten ausgewählt."
     }
 
     }
     "4"{
-        Write-Host "Option 4 selected: tiny11 with edge and Product key."
+        Write-Host "Option 4 ausgewählt: tiny11 mit edge und Produktschlüssel."
         #calling all functions for deleting exept 'Edge'
         $var = "OneDrive", "Load_reg", "Bypassing_system_requirements", "Disabling_Sponsored_Apps", "Enabling_Local_Accounts_on_OOBE", "Disabling_Reserved_Storage", "Disabling_BitLocker_Device_Encryption", "Disabling_Chat_icon", "OneDrive_Backup", "Disabling_Telemetry", "Outlook", "DevHome"
         
-        $windowsKey = Read-Host "Please enter your Windows activation key" ## hardcoded version below
-        # $windowsKey = "DXG7C-N36C4-C4HTG-X4T3X-2YV77"   #<----------------just an example
+        #$windowsKey = Read-Host "Please enter your Windows activation key" ## Kann Hard gecodet werden --> man muss nicht jedesmal den key eingeben
+        $windowsKey = "DXG7C-N36C4-C4HTG-X4T3X-2YV77"   #<----------------just an example
         if ($windowsKey) {
             Write-Output "Applying Windows Key: $windowsKey"
             try {
@@ -456,7 +457,7 @@ switch ($choice) {
         }
     }
     default {
-        Write-Host "Invalid input. Please start the script again and select 1, 2 or 3."
+        Write-Host "Ungültige Eingabe. Bitte starten Sie das Skript erneut und wählen Sie 1, 2 oder 3."
         exit
     }
 }
@@ -473,8 +474,9 @@ $packages = & 'dism' '/English' "/image:$($ScratchDisk)\scratchdir" '/Get-Provis
         }
     }
 
+ # (original )$packagePrefixes = 'Clipchamp.Clipchamp_', 'Microsoft.BingNews_', 'Microsoft.BingWeather_', 'Microsoft.GamingApp_', 'Microsoft.GetHelp_', 'Microsoft.Getstarted_', 'Microsoft.MicrosoftOfficeHub_', 'Microsoft.MicrosoftSolitaireCollection_', 'Microsoft.People_', 'Microsoft.PowerAutomateDesktop_', 'Microsoft.Todos_', 'Microsoft.WindowsAlarms_', 'microsoft.windowscommunicationsapps_', 'Microsoft.WindowsFeedbackHub_', 'Microsoft.WindowsMaps_', 'Microsoft.WindowsSoundRecorder_', 'Microsoft.Xbox.TCUI_', 'Microsoft.XboxGamingOverlay_', 'Microsoft.XboxGameOverlay_', 'Microsoft.XboxSpeechToTextOverlay_', 'Microsoft.YourPhone_', 'Microsoft.ZuneMusic_', 'Microsoft.ZuneVideo_', 'MicrosoftCorporationII.MicrosoftFamily_', 'MicrosoftCorporationII.QuickAssist_', 'MicrosoftTeams_', 'Microsoft.549981C3F5F10_'
 
-if ($choice -ne "3"){ # if 3 not selectet, set the standard removing
+if ($choice -ne "3"){ # choice - 3 --> wenn ein dulli nichts deinstalliert haben will 
     Write-Host "using standart removing..."
     $global:selectedFeatures = 'Clipchamp.Clipchamp_', 'Microsoft.BingNews_', 'Microsoft.BingWeather_', 'Microsoft.GamingApp_', 'Microsoft.GetHelp_', 'Microsoft.Getstarted_', 'Microsoft.MicrosoftOfficeHub_', 'Microsoft.MicrosoftSolitaireCollection_', 'Microsoft.People_', 'Microsoft.PowerAutomateDesktop_', 'Microsoft.Todos_', 'Microsoft.WindowsAlarms_', 'microsoft.windowscommunicationsapps_', 'Microsoft.WindowsFeedbackHub_', 'Microsoft.WindowsMaps_', 'Microsoft.WindowsSoundRecorder_', 'Microsoft.Xbox.TCUI_', 'Microsoft.XboxGamingOverlay_', 'Microsoft.XboxGameOverlay_', 'Microsoft.XboxSpeechToTextOverlay_', 'Microsoft.YourPhone_', 'Microsoft.ZuneMusic_', 'Microsoft.ZuneVideo_', 'MicrosoftCorporationII.MicrosoftFamily_', 'MicrosoftCorporationII.QuickAssist_', 'MicrosoftTeams_', 'Microsoft.549981C3F5F10_'
 }
@@ -491,7 +493,8 @@ foreach ($package in $packagesToRemove) {
 
 
 
-# mainremover function
+# Durchlaufe die Variable und rufe jede Funktion auf 
+#! Hauptremover function
 foreach ($functionName in $var) {
     Invoke-Expression $functionName
 }

@@ -402,7 +402,7 @@ switch ($choice) {
 
     # Evaluate results
     if ($global:selectedComponents) {
-        Write-Host "The following components were selected:"
+        Write-Host "Folgende Komponenten wurden ausgewählt:"
         $global:selectedComponents | ForEach-Object { Write-Host "- $_" }
 
         $var = $null # defining var 
@@ -456,7 +456,7 @@ switch ($choice) {
         }
     }
     default {
-        Write-Host "Invalid input. Please start the script again and select 1, 2 or 3."
+        Write-Host "Ungültige Eingabe. Bitte starten Sie das Skript erneut und wählen Sie 1, 2 oder 3."
         exit
     }
 }
