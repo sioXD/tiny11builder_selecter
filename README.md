@@ -6,27 +6,28 @@ Scripts to build a trimmed-down Windows 11 image!
 ### Changes from the original tiny11builder
 - <u>added a menu where you can decide what you want to download </u>
 <br>
-1: normal tiny11 <br>
-2: tiny11 with edge <br>
-3: custom selection menu with **GUI** (you can select what you want to delete and what to keep ) <br>
-4: tiny11 with edge and with windows key input field
+- 1: normal tiny11 
+- 2: tiny11 with edge 
+- 3: custom selection menu with **GUI** (you can select what you want to delete and what to keep )
+- 4: tiny11 with edge and with windows key input field <br>
 
-    <img src="./small_GUI.png" alt="GUI" width="200"/>
+<br> 
+<img src="./small_GUI.png" alt="GUI" width="200"/>
+<br> 
+<br> 
 
-    <br>
+<details>
+<summary>code changes</summary>
 
-    <details>
-    <summary>code changes</summary>
+### This is just a list of the code changes I made in the code  
 
-    ### This is just a list of the code changes I made in the code  
+- added a choice switchcase
+- made most of the delete stuff into functions for better readability
+- spit outlook from DevHome for better selection
+- Added an GUI for choice 3: you select the thing you want to delete (`Load_reg` **must** always be selectet)
+- added the option for the activation key to be given per input or hardcode    
 
-    - added a choice switchcase
-    - made most of the delete stuff into functions for better readability
-    - spit outlook from DevHome for better selection
-    - Added an GUI for choice 3: you select the thing you want to delete (`Load_reg` **must** always be selectet)
-    - added the option for the activation key to be given per input or hardcode    
-    
-    </details> <br> 
+</details> <br> <br> 
 
 Since it is written in PowerShell, you need to set the execution policy to  `Unrestricted`, so that you could run the script.
 If you haven't done this before, make sure to run `Set-ExecutionPolicy unrestricted` as administrator in PowerShell before running the script, otherwise it would just crash.
