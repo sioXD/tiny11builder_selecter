@@ -317,30 +317,28 @@ switch ($choice) {
         # Fenster erstellen
         $form = New-Object System.Windows.Forms.Form
         $form.Text = "Komponenten-Auswahl"
-        $form.Size = New-Object System.Drawing.Size(400, 500)
+        $form.Size = New-Object System.Drawing.Size(500, 600)
         $form.StartPosition = "CenterScreen"
-        $form.BackColor = [System.Drawing.Color]::FromArgb(245, 245, 245)  # Heller Hintergrund
+        $form.BackColor = [System.Drawing.Color]::FromArgb(30, 30, 60)  # Dunkles Blau für Hintergrund
 
         # Abgerundete Ecken
-        $radius = 20  # Radius der abgerundeten Ecken
+        $radius = 20
         $path = New-Object System.Drawing.Drawing2D.GraphicsPath
-        $path.AddArc(0, 0, $radius, $radius, 180, 90) # obere linke Ecke
-        $path.AddArc($form.Width - $radius - 1, 0, $radius, $radius, 270, 90) # obere rechte Ecke
-        $path.AddArc($form.Width - $radius - 1, $form.Height - $radius - 1, $radius, $radius, 0, 90) # untere rechte Ecke
-        $path.AddArc(0, $form.Height - $radius - 1, $radius, $radius, 90, 90) # untere linke Ecke
+        $path.AddArc(0, 0, $radius, $radius, 180, 90) # Obere linke Ecke
+        $path.AddArc($form.Width - $radius - 1, 0, $radius, $radius, 270, 90) # Obere rechte Ecke
+        $path.AddArc($form.Width - $radius - 1, $form.Height - $radius - 1, $radius, $radius, 0, 90) # Untere rechte Ecke
+        $path.AddArc(0, $form.Height - $radius - 1, $radius, $radius, 90, 90) # Untere linke Ecke
         $path.CloseFigure()
-        # Formular mit abgerundeten Ecken
         $form.Region = New-Object System.Drawing.Region($path)
         
         # ListBox mit Checkboxen erstellen
         $listBox = New-Object System.Windows.Forms.CheckedListBox
-        $listBox.Size = New-Object System.Drawing.Size(350, 400)
-        $listBox.Location = New-Object System.Drawing.Point(20, 20)
-        $listBox.BackColor = [System.Drawing.Color]::FromArgb(255, 255, 255)  # Weißer Hintergrund für die Liste
-        $listBox.ForeColor = [System.Drawing.Color]::FromArgb(0, 0, 0)  # Schwarzer Text
-        $listBox.BorderStyle = [System.Windows.Forms.BorderStyle]::Fixed3D
-        $listBox.ItemHeight = 30
-        $listBox.CheckOnClick = $true  # Ein-Klick-Auswahl aktivieren
+        $listBox.Size = New-Object System.Drawing.Size(450, 350)
+        $listBox.Location = New-Object System.Drawing.Point(25, 25)
+        $listBox.BackColor = [System.Drawing.Color]::FromArgb(50, 50, 100)  # Dunklerer Blauton für die Liste
+        $listBox.ForeColor = [System.Drawing.Color]::White
+        $listBox.BorderStyle = [System.Windows.Forms.BorderStyle]::None
+        $listBox.CheckOnClick = $true
 
 
         # Elemente hinzufügen
@@ -366,13 +364,35 @@ switch ($choice) {
             $listBox.SetItemChecked($i, $true)
         }
 
-        $form.Controls.Add($listBox)
-        
+        # TODO was das $form.Controls.Add($listBox)
+       
+        # Checkboxen mit Stil anpassen
+        $listBox.DrawItem += {
+            param($sender, $e)
+            $graphics = $e.Graphics
+            $checkedState = $listBox.GetItemChecked($e.Index)
+
+            # Hintergrund zeichnen
+            $graphics.FillRectangle([System.Drawing.Brushes]::White, $e.Bounds)
+
+            # Checkbox erstellen
+            $checkboxRect = New-Object System.Drawing.RectangleF($e.Bounds.X, $e.Bounds.Y, 20, 20)
+            $backgroundColor = if ($checkedState) { [System.Drawing.Color]::Blue } else { [System.Drawing.Color]::White }
+            $graphics.FillRectangle((New-Object System.Drawing.SolidBrush($backgroundColor)), $checkboxRect)
+
+            # Text
+            $text = $listBox.Items[$e.Index]
+            $textBrush = [System.Drawing.Brushes]::Black
+            $graphics.DrawString($text, $e.Font, $textBrush, $e.Bounds.X + 25, $e.Bounds.Y)
+        }
+        $listBox.DrawMode = 'OwnerDrawFixed'
+
+
        # Modernes Button-Design mit Hover-Effekt
         $okButton = New-Object System.Windows.Forms.Button
         $okButton.Text = "OK"
         $okButton.Size = New-Object System.Drawing.Size(100, 40)
-        $okButton.Location = New-Object System.Drawing.Point(150, 415)
+        $okButton.Location = New-Object System.Drawing.Point(150, 380)
         $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  # Blauer Hintergrund
         $okButton.ForeColor = [System.Drawing.Color]::FromArgb(255, 255, 255)  # Weißer Text
         $okButton.FlatStyle = [System.Windows.Forms.FlatStyle]::Flat
@@ -398,6 +418,7 @@ switch ($choice) {
         $form.Controls.Add($okButton)
 
         # Fenster anzeigen
+        $form.Controls.Add($okButton)
         $form.Add_Shown({ $form.Activate() })
         [void]$form.ShowDialog()
 

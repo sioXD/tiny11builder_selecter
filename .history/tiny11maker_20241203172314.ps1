@@ -334,7 +334,7 @@ switch ($choice) {
         
         # ListBox mit Checkboxen erstellen
         $listBox = New-Object System.Windows.Forms.CheckedListBox
-        $listBox.Size = New-Object System.Drawing.Size(350, 400)
+        $listBox.Size = New-Object System.Drawing.Size(350, 300)
         $listBox.Location = New-Object System.Drawing.Point(20, 20)
         $listBox.BackColor = [System.Drawing.Color]::FromArgb(255, 255, 255)  # Weißer Hintergrund für die Liste
         $listBox.ForeColor = [System.Drawing.Color]::FromArgb(0, 0, 0)  # Schwarzer Text
@@ -372,7 +372,7 @@ switch ($choice) {
         $okButton = New-Object System.Windows.Forms.Button
         $okButton.Text = "OK"
         $okButton.Size = New-Object System.Drawing.Size(100, 40)
-        $okButton.Location = New-Object System.Drawing.Point(150, 415)
+        $okButton.Location = New-Object System.Drawing.Point(150, 380)
         $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  # Blauer Hintergrund
         $okButton.ForeColor = [System.Drawing.Color]::FromArgb(255, 255, 255)  # Weißer Text
         $okButton.FlatStyle = [System.Windows.Forms.FlatStyle]::Flat

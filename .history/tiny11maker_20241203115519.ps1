@@ -1,18 +1,6 @@
-# Enable debugging
+#Enable debugging
 #Set-PSDebug -Trace 1
 
-param (
-    [ValidatePattern('^[c-zC-Z]$')]
-    [string]$ScratchDisk
-)
-
-if (-not $ScratchDisk) {
-    $ScratchDisk = $PSScriptRoot -replace '[\\]+$', ''
-} else {
-    $ScratchDisk = $ScratchDisk + ":"
-}
-
-Write-Output "Scratch disk set to $ScratchDisk"
 
 # Check if PowerShell execution is restricted
 if ((Get-ExecutionPolicy) -eq 'Restricted') {
@@ -334,7 +322,7 @@ switch ($choice) {
         
         # ListBox mit Checkboxen erstellen
         $listBox = New-Object System.Windows.Forms.CheckedListBox
-        $listBox.Size = New-Object System.Drawing.Size(350, 400)
+        $listBox.Size = New-Object System.Drawing.Size(350, 300)
         $listBox.Location = New-Object System.Drawing.Point(20, 20)
         $listBox.BackColor = [System.Drawing.Color]::FromArgb(255, 255, 255)  # Weißer Hintergrund für die Liste
         $listBox.ForeColor = [System.Drawing.Color]::FromArgb(0, 0, 0)  # Schwarzer Text
@@ -372,7 +360,7 @@ switch ($choice) {
         $okButton = New-Object System.Windows.Forms.Button
         $okButton.Text = "OK"
         $okButton.Size = New-Object System.Drawing.Size(100, 40)
-        $okButton.Location = New-Object System.Drawing.Point(150, 415)
+        $okButton.Location = New-Object System.Drawing.Point(150, 380)
         $okButton.BackColor = [System.Drawing.Color]::FromArgb(60, 120, 220)  # Blauer Hintergrund
         $okButton.ForeColor = [System.Drawing.Color]::FromArgb(255, 255, 255)  # Weißer Text
         $okButton.FlatStyle = [System.Windows.Forms.FlatStyle]::Flat
@@ -499,6 +487,52 @@ foreach ($functionName in $var) {
     Invoke-Expression $functionName
 }
 
+
+
+<#
+edge 
+onedrive
+Start-Sleep -Seconds 2
+Clear-Host
+
+Write-Host "Loading registry..."
+reg load HKLM\zCOMPONENTS $ScratchDisk\scratchdir\Windows\System32\config\COMPONENTS | Out-Null
+reg load HKLM\zDEFAULT $ScratchDisk\scratchdir\Windows\System32\config\default | Out-Null
+reg load HKLM\zNTUSER $ScratchDisk\scratchdir\Users\Default\ntuser.dat | Out-Null
+reg load HKLM\zSOFTWARE $ScratchDisk\scratchdir\Windows\System32\config\SOFTWARE | Out-Null
+reg load HKLM\zSYSTEM $ScratchDisk\scratchdir\Windows\System32\config\SYSTEM | Out-Null
+
+Write-Host "Bypassing system requirements(on the system image):"
+    & 'reg' 'add' 'HKLM\zDEFAULT\Control Panel\UnsupportedHardwareNotificationCache' '/v' 'SV1' '/t' 'REG_DWORD' '/d' '0' '/f' | Out-Null
+    & 'reg' 'add' 'HKLM\zDEFAULT\Control Panel\UnsupportedHardwareNotificationCache' '/v' 'SV2' '/t' 'REG_DWORD' '/d' '0' '/f' | Out-Null
+    & 'reg' 'add' 'HKLM\zNTUSER\Control Panel\UnsupportedHardwareNotificationCache' '/v' 'SV1' '/t' 'REG_DWORD' '/d' '0' '/f' | Out-Null
+    & 'reg' 'add' 'HKLM\zNTUSER\Control Panel\UnsupportedHardwareNotificationCache' '/v' 'SV2' '/t' 'REG_DWORD' '/d' '0' '/f' | Out-Null
+    & 'reg' 'add' 'HKLM\zSYSTEM\Setup\LabConfig' '/v' 'BypassCPUCheck' '/t' 'REG_DWORD' '/d' '1' '/f' | Out-Null
+    & 'reg' 'add' 'HKLM\zSYSTEM\Setup\LabConfig' '/v' 'BypassRAMCheck' '/t' 'REG_DWORD' '/d' '1' '/f' | Out-Null
+    & 'reg' 'add' 'HKLM\zSYSTEM\Setup\LabConfig' '/v' 'BypassSecureBootCheck' '/t' 'REG_DWORD' '/d' '1' '/f' | Out-Null
+    & 'reg' 'add' 'HKLM\zSYSTEM\Setup\LabConfig' '/v' 'BypassStorageCheck' '/t' 'REG_DWORD' '/d' '1' '/f' | Out-Null
+    & 'reg' 'add' 'HKLM\zSYSTEM\Setup\LabConfig' '/v' 'BypassTPMCheck' '/t' 'REG_DWORD' '/d' '1' '/f' | Out-Null
+    & 'reg' 'add' 'HKLM\zSYSTEM\Setup\MoSetup' '/v' 'AllowUpgradesWithUnsupportedTPMOrCPU' '/t' 'REG_DWORD' '/d' '1' '/f' | Out-Null
+
+
+
+#>
+
+
+
+<#
+ code for later use
+
+ --> vllt namen in GUI bearbeiten -
+
+          "Clipchamp", "News", "Weather", "Xbox", "GetHelp", "GetStarted", 
+            "Office Hub", "Solitaire", "PeopleApp", "PowerAutomate", "ToDo", 
+            "Alarms", "Mail and Calendar", "Feedback Hub", "Maps", "Sound Recorder", 
+            "Your Phone", "Media Player", "QuickAssist", "Internet Explorer", 
+            "Tablet PC Math", "Edge", "OneDrive"
+
+#>
+
 ## this function allows PowerShell to take ownership of the Scheduled Tasks registry key from TrustedInstaller. Based on Jose Espitia's script.
 function Enable-Privilege {
  param(
@@ -520,6 +554,7 @@ function Enable-Privilege {
   ## Switch to disable the privilege, rather than enable it.
   [Switch] $Disable
  )
+ 
 $definition = @'
 using System;
 using System.Runtime.InteropServices;
@@ -706,6 +741,7 @@ Read-Host "Press Enter to continue"
 Write-Host "Performing Cleanup..."
 Remove-Item -Path "$ScratchDisk\tiny11" -Recurse -Force | Out-Null
 Remove-Item -Path "$ScratchDisk\scratchdir" -Recurse -Force | Out-Null
+
 
 # Stop the transcript
 Stop-Transcript
