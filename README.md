@@ -11,7 +11,7 @@ Scripts to build a trimmed-down Windows 11 image!
 3: custom selection menu with **GUI** (you can select what you want to delete and what to keep ) <br>
 4: tiny11 with edge and with windows key input field
 
-    <details><summary>GUI</summary> ![image](./small_GUI.png) </details>
+    <img src="./small_GUI.png" alt="GUI" width="200"/>
 
     <br>
 
