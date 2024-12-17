@@ -443,13 +443,22 @@ switch ($choice) {
         
         $windowsKey = Read-Host "Please enter your Windows activation key" ## hardcoded version below
         # $windowsKey = "DXG7C-N36C4-C4HTG-X4T3X-2YV77"   #<----------------just an example
+
+        #you can find generic keys here: https://gist.github.com/rvrsh3ll/0810c6ed60e44cf7932e4fbae25880df 
+
         if ($windowsKey) {
-            Write-Output "Applying Windows Key: $windowsKey"
+            Write-Output "Windows Key entered: $windowsKey"
             try {
-                cscript //nologo slmgr.vbs /ipk $windowsKey
-                Write-Output "Windows Key has been applied successfully."
+                $pidFilePath = "C:\tiny11\sources\PID.txt" # path to copied drive
+                Write-Host "Creating PID.txt with the provided Windows key..."
+                @"
+[PID]
+Value=$windowsKey
+"@ | Out-File -FilePath $pidFilePath -Encoding ASCII
+
+                Write-Output "PID.txt successfully created with the Windows key."
             } catch {
-                Write-Output "An error occurred while applying the Windows Key."
+                Write-Output "An error occurred while creating PID.txt."
             }
         } else {
             Write-Output "No Windows Key entered. Returning to menu."
